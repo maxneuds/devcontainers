@@ -1,0 +1,77 @@
+{
+    "name": "LaTeX",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "UID": "1000",
+            "GID": "1000",
+            "DOCKER_GID": "977"
+        }
+    },
+    "remoteUser": "dev",
+    "workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind",
+    "forwardPorts": [9000],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+				"vscode-icons-team.vscode-icons",
+                "ms-azuretools.vscode-docker",
+                "GitHub.copilot",
+                "continue.continue",
+				"eamodio.gitlens",
+				"mhutchie.git-graph",
+				"johnpapa.vscode-peacock",
+				"shardulm94.trailing-spaces",
+				"mathematic.vscode-latex",
+                "mathematic.vscode-pdf",
+				"james-yu.latex-workshop"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "/bin/zsh",
+                "editor.formatOnSave": true,
+                "eslint.format.enable": true,
+                "latex-workshop.linting.chktex.enabled": true,
+                "latex-workshop.linting.chktex.exec.path": "chktex",
+                "latex-workshop.latex.clean.subfolder.enabled": true,
+                "latex-workshop.latex.autoClean.run": "onBuilt",
+                "files.associations": {
+                    "*.tex": "latex"
+                },
+                "latex-workshop.formatting.latex": "latexindent",
+                "latex-workshop.formatting.latexindent.path": "latexindent",
+                "latex-workshop.formatting.latexindent.args": [
+                    "-c",
+                    "%DIR%/",
+                    "%TMPFILE%",
+                    "-y=defaultIndent: '%INDENT%'"
+                ],
+                "latex-workshop.latex.autoBuild.run": "onSave",
+                "latex-workshop.latex.outDir": "output",
+                "latex-workshop.latex.recipes": [
+                    {
+                        "name": "latexmk (pdf)",
+                        "tools": ["latexmk"]
+                    }
+                ],
+                "latex-workshop.latex.tools": [
+                    {
+                        "name": "latexmk",
+                        "command": "latexmk",
+                        "args": [
+                            "-pdf",
+                            "-outdir=output",
+                            "%DOC%"
+                        ]
+                    }
+                ],
+                "latex-workshop.view.pdf.viewer": "tab"
+            }
+        }
+    },
+    "mounts": [
+        "type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock",
+        "type=bind,source=${localEnv:HOME}/.ssh,target=/home/worker/.ssh,readonly",
+        "type=bind,source=${localEnv:HOME}/.gitconfig,target=/home/worker/.gitconfig,readonly"
+    ]
+}
